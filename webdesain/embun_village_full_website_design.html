@@ -1,0 +1,1190 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#1C2B23;
+  --pine:#2E4E3F;
+  --moss:#4A7A5F;
+  --sage:#7AAE8E;
+  --mist:#EEF2EE;
+  --linen:#F7F5F0;
+  --dew:#DDEBD9;
+  --gold:#B8935A;
+  --gold-lt:#E8D5B7;
+  --cream:#FAF8F3;
+  --bark:#7A5C42;
+  --shadow-sm:0 2px 8px rgba(28,43,35,.06);
+  --shadow-md:0 8px 30px rgba(28,43,35,.1);
+  --shadow-lg:0 20px 60px rgba(28,43,35,.14);
+  --shadow-glow:0 0 20px rgba(74,122,95,.15);
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+  --radius-xl:20px;
+  --transition:250ms cubic-bezier(.22,1,.36,1);
+}
+
+html{scroll-behavior:smooth}
+
+body,div,section,nav,header,footer{font-family:'DM Sans',sans-serif}
+
+.site{background:var(--linen);color:var(--ink);overflow-x:hidden}
+
+/* ============ SCROLL REVEAL ============ */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.show{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ============ NAV ============ */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 40px;
+  background:var(--cream);
+  border-bottom:0.5px solid rgba(46,78,63,0.1);
+  position:sticky;top:0;z-index:100;
+  transition:background var(--transition),box-shadow var(--transition),padding var(--transition);
+}
+.nav.scrolled{
+  background:rgba(250,248,243,.88);
+  backdrop-filter:blur(16px) saturate(1.1);
+  -webkit-backdrop-filter:blur(16px) saturate(1.1);
+  box-shadow:0 1px 20px rgba(28,43,23,.06);
+  padding:12px 40px;
+}
+.nav-brand{display:flex;align-items:center;gap:12px}
+.nav-mark{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--pine);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform var(--transition);
+}
+.nav-brand:hover .nav-mark{transform:rotate(-8deg) scale(1.05)}
+.nav-mark svg{width:18px;height:18px}
+.nav-wordmark{line-height:1.1}
+.nav-wordmark strong{display:block;font-family:'Playfair Display',serif;font-size:15px;font-weight:400;color:var(--ink)}
+.nav-wordmark span{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--moss);font-weight:400}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links li{
+  font-size:12px;font-weight:400;color:var(--ink);opacity:.6;
+  cursor:pointer;letter-spacing:.03em;
+  position:relative;padding-bottom:3px;
+  transition:opacity var(--transition);
+}
+.nav-links li::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
+  background:var(--moss);transition:width var(--transition);
+}
+.nav-links li:hover{opacity:1}
+.nav-links li:hover::after{width:100%}
+.nav-btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--pine);color:var(--linen);
+  padding:9px 20px;border-radius:100px;border:none;
+  font-size:12px;font-weight:500;letter-spacing:.04em;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:background var(--transition),transform var(--transition),box-shadow var(--transition);
+}
+.nav-btn:hover{
+  background:var(--moss);
+  transform:translateY(-1px);
+  box-shadow:0 4px 15px rgba(74,122,95,.3);
+}
+.nav-btn:active{transform:translateY(0);box-shadow:none}
+
+/* Mobile menu */
+.nav-hamburger{
+  display:none;flex-direction:column;gap:4px;cursor:pointer;
+  background:none;border:none;padding:4px;
+}
+.nav-hamburger span{
+  display:block;width:20px;height:1.5px;background:var(--ink);
+  border-radius:2px;transition:transform .3s,opacity .3s;
+}
+.nav-hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.nav-hamburger.active span:nth-child(2){opacity:0}
+.nav-hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;height:580px;
+  background:var(--pine);
+  overflow:hidden;
+  display:flex;align-items:flex-end;
+}
+.hero::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(28,43,35,.4));
+  pointer-events:none;z-index:2;
+}
+.hero-sky{
+  position:absolute;inset:0;
+  background:var(--pine);
+}
+.hero-content{
+  position:relative;z-index:4;
+  padding:0 40px 52px;width:100%;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:16px;
+  opacity:0;animation:fadeSlideIn .8s .3s forwards;
+}
+.hero-tag::before{content:'';width:20px;height:.5px;background:var(--gold)}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:64px;font-weight:300;line-height:1;
+  color:var(--linen);letter-spacing:-.02em;margin-bottom:6px;
+  opacity:0;animation:fadeSlideIn .8s .5s forwards;
+}
+.hero-h1 em{font-style:italic;color:var(--gold-lt)}
+.hero-desc{
+  font-size:12px;font-weight:300;color:rgba(247,245,240,.5);
+  letter-spacing:.06em;margin-bottom:36px;
+  opacity:0;animation:fadeSlideIn .8s .7s forwards;
+}
+.hero-alt{
+  position:absolute;top:32px;right:40px;z-index:4;
+  text-align:right;
+  opacity:0;animation:fadeIn .8s .2s forwards;
+}
+.hero-alt-num{
+  font-family:'Playfair Display',serif;font-size:52px;
+  font-weight:300;color:rgba(247,245,240,.18);line-height:1;
+}
+.hero-alt-unit{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(247,245,240,.2)}
+
+@keyframes fadeSlideIn{
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeIn{
+  to{opacity:1}
+}
+
+/* Twinkle stars animation */
+@keyframes twinkle{
+  0%,100%{opacity:var(--twinkle-opacity, .3)}
+  50%{opacity:calc(var(--twinkle-opacity, .3) + .3)}
+}
+.hero svg circle[cx]:not([cx="580"]){animation:twinkle 3s ease-in-out infinite}
+.hero svg circle[cx="130"]{--twinkle-opacity:.4;animation-delay:.2s}
+.hero svg circle[cx="270"]{--twinkle-opacity:.45;animation-delay:.8s}
+.hero svg circle[cx="410"]{--twinkle-opacity:.38;animation-delay:.5s}
+.hero svg circle[cx="540"]{--twinkle-opacity:.42;animation-delay:1.2s}
+.hero svg circle[cx="648"]{--twinkle-opacity:.36;animation-delay:.35s}
+
+/* ============ SEARCH BAR ============ */
+.search{
+  display:inline-flex;align-items:stretch;
+  background:var(--cream);border-radius:14px;
+  border:0.5px solid rgba(46,78,63,.12);
+  overflow:hidden;
+  opacity:0;animation:fadeSlideIn .8s .9s forwards;
+  box-shadow:0 4px 20px rgba(0,0,0,.08);
+  transition:box-shadow var(--transition);
+}
+.search:hover{box-shadow:0 6px 30px rgba(0,0,0,.12)}
+.search-field{padding:12px 18px;border-right:.5px solid rgba(46,78,63,.1);transition:background var(--transition)}
+.search-field:hover{background:rgba(46,78,63,.02)}
+.search-label{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--moss);font-weight:500;margin-bottom:2px}
+.search-val{font-size:13px;font-weight:400;color:var(--ink);display:flex;align-items:center;gap:5px}
+.search-val i{font-size:13px;color:var(--moss);opacity:.6}
+.search-go{
+  background:var(--pine);color:var(--linen);
+  padding:0 22px;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:7px;
+  font-size:12px;font-weight:500;letter-spacing:.04em;font-family:'DM Sans',sans-serif;
+  transition:background var(--transition),padding var(--transition);
+}
+.search-go:hover{background:var(--moss);padding:0 28px}
+
+/* ============ STATS STRIP ============ */
+.stats{
+  display:flex;border-bottom:.5px solid rgba(46,78,63,.08);
+  background:var(--cream);
+}
+.stat{
+  flex:1;padding:18px 24px;
+  border-right:.5px solid rgba(46,78,63,.08);
+  transition:background var(--transition);
+}
+.stat:last-child{border-right:none}
+.stat:hover{background:rgba(74,122,95,.03)}
+.stat-num{
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:300;color:var(--pine);
+  line-height:1;margin-bottom:3px;
+}
+.stat-lbl{font-size:10px;color:var(--moss);opacity:.7;letter-spacing:.04em}
+
+/* ============ SECTION ============ */
+.sec{padding:56px 40px}
+.sec-eye{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--moss);font-weight:500;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-eye::after{content:'';flex:1;max-width:60px;height:.5px;background:var(--sage);opacity:.4}
+.sec-h2{
+  font-family:'Playfair Display',serif;
+  font-size:38px;font-weight:300;color:var(--ink);
+  line-height:1.1;margin-bottom:0;
+}
+.sec-h2 em{font-style:italic;color:var(--moss)}
+
+/* ============ UNITS GRID ============ */
+.units-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px}
+.units-note{font-size:11px;color:var(--bark);opacity:.6;padding-bottom:4px}
+.units{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+.card{
+  background:var(--cream);border-radius:var(--radius-lg);
+  border:.5px solid rgba(46,78,63,.1);overflow:hidden;
+  cursor:pointer;
+  transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition);
+}
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-md);
+  border-color:rgba(74,122,95,.2);
+}
+.card:hover .card-img-inner{transform:scale(1.06)}
+.card.best{
+  border:1.5px solid var(--moss);
+  box-shadow:var(--shadow-glow);
+}
+.card.best:hover{
+  box-shadow:0 12px 40px rgba(74,122,95,.2);
+}
+
+.card-img{height:160px;overflow:hidden;position:relative}
+.card-img-inner{
+  width:100%;height:100%;
+  transition:transform .6s cubic-bezier(.22,1,.36,1);
+}
+.ci-pine{background:var(--pine)}
+.ci-edelweiss{background:#1E3529}
+.ci-seruni{background:var(--bark)}
+
+.card-badge{
+  position:absolute;top:12px;left:12px;z-index:2;
+  font-size:8px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 10px;border-radius:100px;
+  transition:transform var(--transition);
+}
+.card:hover .card-badge{transform:scale(1.05)}
+.badge-pop{background:var(--gold);color:#3D2615}
+.badge-new{background:var(--pine);color:var(--linen)}
+.badge-best{background:var(--moss);color:var(--linen)}
+
+.card-body{padding:18px}
+.card-name{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:400;color:var(--ink);margin-bottom:2px;
+  transition:color var(--transition);
+}
+.card:hover .card-name{color:var(--pine)}
+.card-sub{font-size:11px;color:var(--moss);opacity:.65;margin-bottom:12px;font-weight:400}
+.card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.tag{
+  font-size:9px;padding:3px 9px;
+  background:var(--dew);border-radius:100px;
+  color:var(--pine);border:.5px solid rgba(74,122,95,.18);
+  font-weight:400;letter-spacing:.02em;
+  transition:background var(--transition),transform var(--transition);
+}
+.card:hover .tag{background:rgba(221,235,217,.8)}
+.card-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:.5px solid rgba(46,78,63,.07);padding-top:14px;
+}
+.card-price{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:300;color:var(--ink);
+}
+.card-price small{
+  font-family:'DM Sans',sans-serif;font-size:10px;
+  color:var(--bark);opacity:.6;font-weight:400;
+}
+.card-pick{
+  font-size:10px;font-weight:500;letter-spacing:.04em;
+  padding:7px 16px;border-radius:100px;cursor:pointer;border:none;
+  font-family:'DM Sans',sans-serif;
+  transition:all var(--transition);
+}
+.pick-outline{
+  background:transparent;color:var(--moss);border:.5px solid var(--moss);
+}
+.pick-outline:hover{
+  background:var(--moss);color:var(--linen);transform:scale(1.04);
+}
+.pick-fill{
+  background:var(--pine);color:var(--linen);
+}
+.pick-fill:hover{
+  background:var(--moss);transform:scale(1.04);box-shadow:0 4px 15px rgba(74,122,95,.3);
+}
+
+/* ============ FACILITIES ============ */
+.fac-sec{
+  background:linear-gradient(135deg,var(--pine) 0%,#1E3529 100%);
+  padding:60px 40px;
+  position:relative;overflow:hidden;
+}
+.fac-sec::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 30% 40%,rgba(74,122,95,.1) 0%,transparent 60%);
+  pointer-events:none;
+}
+.fac-eye{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);opacity:.8;font-weight:500;margin-bottom:10px;
+  position:relative;z-index:1;
+}
+.fac-h2{
+  font-family:'Playfair Display',serif;font-size:36px;
+  font-weight:300;color:var(--linen);line-height:1.1;margin-bottom:28px;
+  position:relative;z-index:1;
+}
+.fac-h2 em{font-style:italic;color:var(--gold-lt)}
+.fac-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative;z-index:1}
+.fac-item{
+  background:rgba(247,245,240,.05);
+  border:.5px solid rgba(247,245,240,.1);
+  border-radius:12px;padding:22px 14px;text-align:center;
+  transition:all var(--transition);
+  cursor:default;
+}
+.fac-item:hover{
+  background:rgba(247,245,240,.1);
+  transform:translateY(-3px);
+  border-color:rgba(247,245,240,.2);
+  box-shadow:0 8px 25px rgba(0,0,0,.15);
+}
+.fac-icon{
+  font-size:22px;color:var(--gold);
+  display:block;margin-bottom:8px;
+  transition:transform var(--transition);
+}
+.fac-item:hover .fac-icon{transform:scale(1.2)}
+.fac-lbl{font-size:11px;color:rgba(247,245,240,.55);line-height:1.4;font-weight:400}
+
+/* ============ BOOKING ============ */
+.book-sec{
+  padding:60px 40px;
+  display:grid;grid-template-columns:1fr 320px;gap:40px;
+  background:var(--linen);
+}
+.book-eye{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--moss);font-weight:500;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.book-eye::after{content:'';flex:1;max-width:60px;height:.5px;background:var(--sage);opacity:.4}
+.book-h2{
+  font-family:'Playfair Display',serif;font-size:32px;
+  font-weight:300;color:var(--ink);margin-bottom:4px;
+}
+.book-sub{font-size:11px;color:var(--bark);opacity:.6;margin-bottom:28px;letter-spacing:.02em}
+
+.form-row{display:flex;gap:14px;margin-bottom:14px}
+.form-field{flex:1}
+.form-label{
+  display:block;font-size:8px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--moss);margin-bottom:5px;
+}
+.form-input{
+  width:100%;padding:10px 14px;
+  border:.5px solid rgba(46,78,63,.2);border-radius:9px;
+  font-size:13px;font-family:'DM Sans',sans-serif;color:var(--ink);
+  background:var(--cream);outline:none;
+  transition:border-color var(--transition),box-shadow var(--transition),background var(--transition);
+}
+.form-input:focus{
+  border-color:var(--moss);
+  box-shadow:0 0 0 3px rgba(74,122,95,.12);
+  background:#fff;
+}
+.form-input:hover{border-color:rgba(74,122,95,.35)}
+.form-select{
+  width:100%;padding:10px 14px;
+  border:.5px solid rgba(46,78,63,.2);border-radius:9px;
+  font-size:13px;font-family:'DM Sans',sans-serif;
+  color:var(--ink);background:var(--cream);
+  transition:border-color var(--transition),box-shadow var(--transition);
+}
+.form-select:focus{
+  border-color:var(--moss);
+  box-shadow:0 0 0 3px rgba(74,122,95,.12);
+  outline:none;
+}
+.form-submit{
+  width:100%;background:var(--pine);color:var(--linen);
+  padding:13px;border-radius:10px;border:none;
+  font-size:13px;font-weight:500;letter-spacing:.05em;
+  cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:6px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all var(--transition);
+}
+.form-submit:hover{
+  background:var(--moss);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(74,122,95,.35);
+}
+.form-submit:active{transform:translateY(0);box-shadow:none}
+.form-note{font-size:9px;color:var(--bark);opacity:.45;margin-top:8px;letter-spacing:.04em}
+
+/* ============ SUMMARY PANEL ============ */
+.summary{
+  background:linear-gradient(135deg,var(--pine) 0%,#1E3529 100%);
+  border-radius:var(--radius-lg);
+  padding:24px;color:var(--linen);
+  height:fit-content;
+  box-shadow:0 8px 30px rgba(28,43,35,.15);
+  position:sticky;top:100px;
+}
+.sum-h{
+  font-family:'Playfair Display',serif;
+  font-size:17px;font-weight:300;color:var(--gold);
+  margin-bottom:16px;padding-bottom:12px;
+  border-bottom:.5px solid rgba(247,245,240,.12);
+}
+.sum-row{
+  display:flex;justify-content:space-between;
+  font-size:11px;padding:6px 0;
+  border-bottom:.5px solid rgba(247,245,240,.06);
+}
+.sum-row label{opacity:.55;font-weight:300}
+.sum-row strong{font-weight:400}
+.sum-total{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-top:14px;margin-top:2px;
+}
+.sum-total label{font-size:9px;opacity:.5;letter-spacing:.12em;text-transform:uppercase}
+.sum-total strong{
+  font-family:'Playfair Display',serif;font-size:28px;
+  font-weight:300;color:var(--gold);
+}
+.sum-info{
+  background:rgba(238,242,238,.07);
+  border:.5px solid rgba(238,242,238,.12);
+  border-radius:10px;padding:14px;margin-top:14px;
+}
+.sum-info-lbl{
+  font-size:8px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);opacity:.7;margin-bottom:6px;font-weight:500;
+}
+.sum-info-text{font-size:11px;color:rgba(247,245,240,.6);line-height:1.6;font-weight:300}
+
+/* ============ TESTIMONIAL STRIP ============ */
+.testi-sec{
+  background:var(--dew);padding:40px;
+  border-top:.5px solid rgba(46,78,63,.1);
+  border-bottom:.5px solid rgba(46,78,63,.1);
+}
+.testi-eye{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--moss);margin-bottom:20px;font-weight:500;
+  display:flex;align-items:center;gap:10px;
+}
+.testi-eye::after{content:'';flex:1;max-width:60px;height:.5px;background:var(--sage);opacity:.4}
+.testis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.testi{
+  background:var(--cream);border-radius:var(--radius-md);
+  border:.5px solid rgba(46,78,63,.08);padding:18px;
+  transition:transform var(--transition),box-shadow var(--transition);
+}
+.testi:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-sm);
+}
+.testi-stars{display:flex;gap:3px;margin-bottom:8px}
+.testi-star{font-size:11px;color:var(--gold)}
+.testi:hover .testi-star{animation:starPulse .4s ease}
+@keyframes starPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.15)}
+}
+.testi-text{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:13px;color:var(--ink);line-height:1.6;
+  margin-bottom:12px;font-weight:300;
+}
+.testi-author{font-size:10px;color:var(--moss);opacity:.65;font-weight:400}
+
+/* ============ FOOTER ============ */
+.footer{
+  background:#152018;padding:36px 40px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;
+}
+.foot-brand{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:300;color:rgba(247,245,240,.4);margin-bottom:6px;
+}
+.foot-tagline{font-size:10px;color:rgba(247,245,240,.2);font-weight:300;letter-spacing:.06em}
+.foot-head{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);opacity:.6;margin-bottom:10px;font-weight:500}
+.foot-links{list-style:none;display:flex;flex-direction:column;gap:6px}
+.foot-links li{
+  font-size:11px;color:rgba(247,245,240,.35);font-weight:300;cursor:pointer;
+  transition:color var(--transition),transform var(--transition);
+}
+.foot-links li:hover{
+  color:rgba(247,245,240,.6);
+  transform:translateX(4px);
+}
+.foot-copy{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 40px;background:#0F1710;
+  font-size:10px;color:rgba(247,245,240,.2);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1024px){
+  .units{grid-template-columns:repeat(2,1fr)}
+  .fac-grid{grid-template-columns:repeat(2,1fr)}
+  .testis{grid-template-columns:repeat(2,1fr)}
+  .hero-h1{font-size:52px}
+}
+@media (max-width:768px){
+  .nav{padding:14px 20px}
+  .nav.scrolled{padding:10px 20px}
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .nav-links.mobile-open{
+    display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;
+    background:rgba(250,248,243,.98);backdrop-filter:blur(16px);
+    padding:20px;gap:16px;border-bottom:.5px solid rgba(46,78,63,.1);
+    animation:fadeSlideIn .3s forwards;
+  }
+  .hero{padding:0 20px 40px}
+  .hero-content{padding:0 0 40px}
+  .hero-h1{font-size:38px}
+  .hero-desc{font-size:11px;margin-bottom:28px}
+  .hero-alt{right:20px;top:20px}
+  .hero-alt-num{font-size:36px}
+  .search{flex-wrap:wrap;border-radius:12px}
+  .search-field{padding:10px 14px;flex:1;min-width:120px;border-right:none;border-bottom:.5px solid rgba(46,78,63,.1)}
+  .search-field:last-of-type{border-bottom:none}
+  .search-go{padding:10px 20px;width:100%;justify-content:center}
+  .stats{flex-wrap:wrap}
+  .stat{padding:14px 16px;flex:1 1 50%}
+  .stat:nth-child(2){border-right:none}
+  .sec{padding:40px 20px}
+  .sec-h2{font-size:28px}
+  .units{grid-template-columns:1fr;gap:16px}
+  .fac-sec{padding:40px 20px}
+  .fac-h2{font-size:28px}
+  .fac-grid{grid-template-columns:repeat(2,1fr)}
+  .book-sec{padding:40px 20px;grid-template-columns:1fr;gap:24px}
+  .book-h2{font-size:28px}
+  .form-row{flex-direction:column;gap:12px}
+  .testis{grid-template-columns:1fr}
+  .testi-sec{padding:30px 20px}
+  .footer{padding:30px 20px;grid-template-columns:1fr 1fr;gap:24px}
+  .foot-copy{padding:14px 20px;flex-direction:column;gap:6px;text-align:center}
+}
+@media (max-width:480px){
+  .hero-h1{font-size:32px}
+  .sec-h2{font-size:24px}
+  .fac-grid{grid-template-columns:1fr}
+  .footer{grid-template-columns:1fr}
+  .nav-btn{padding:8px 14px;font-size:11px}
+  .nav-btn i{display:none}
+}
+</style>
+
+<div class="site">
+
+  <!-- NAV -->
+  <nav class="nav" id="navbar">
+    <div class="nav-brand">
+      <div class="nav-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3C12 3 5 9 5 15C5 18.866 8.134 22 12 22C15.866 22 19 18.866 19 15C19 9 12 3 12 3Z" stroke="#EEF2EE" stroke-width="1" fill="rgba(238,242,238,0.15)"/>
+          <path d="M9 15C9 13.343 10.343 12 12 12" stroke="#B8935A" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="nav-wordmark">
+        <strong>Embun Village</strong>
+        <span>Sangga Langit</span>
+      </div>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li onclick="document.getElementById('glamping').scrollIntoView({behavior:'smooth'})">Glamping</li>
+      <li onclick="document.getElementById('fasilitas').scrollIntoView({behavior:'smooth'})">Fasilitas</li>
+      <li onclick="document.getElementById('testimonials').scrollIntoView({behavior:'smooth'})">Ulasan</li>
+      <li onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Reservasi</li>
+    </ul>
+    <button class="nav-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">
+      <i class="ti ti-calendar" aria-hidden="true" style="font-size:14px"></i> Booking Sekarang
+    </button>
+    <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-sky"></div>
+
+    <!-- SVG mountain + mist scene -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 680 580" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Night sky gradient layers -->
+      <rect x="0" y="0" width="680" height="580" fill="#1C2B23"/>
+      <rect x="0" y="0" width="680" height="300" fill="#162218" opacity=".7"/>
+
+      <!-- Stars -->
+      <circle cx="62" cy="38" r="1" fill="#EEF2EE" opacity=".35"/>
+      <circle cx="130" cy="20" r="1.4" fill="#EEF2EE" opacity=".4"/>
+      <circle cx="198" cy="52" r="0.8" fill="#EEF2EE" opacity=".28"/>
+      <circle cx="270" cy="14" r="1.1" fill="#EEF2EE" opacity=".45"/>
+      <circle cx="345" cy="30" r="0.9" fill="#EEF2EE" opacity=".3"/>
+      <circle cx="410" cy="8" r="1.3" fill="#EEF2EE" opacity=".38"/>
+      <circle cx="480" cy="44" r="0.7" fill="#EEF2EE" opacity=".32"/>
+      <circle cx="540" cy="18" r="1.5" fill="#EEF2EE" opacity=".42"/>
+      <circle cx="600" cy="55" r="0.9" fill="#EEF2EE" opacity=".27"/>
+      <circle cx="648" cy="28" r="1.2" fill="#EEF2EE" opacity=".36"/>
+      <circle cx="90" cy="80" r="0.7" fill="#EEF2EE" opacity=".2"/>
+      <circle cx="320" cy="65" r="0.8" fill="#EEF2EE" opacity=".22"/>
+      <circle cx="570" cy="72" r="0.6" fill="#EEF2EE" opacity=".18"/>
+
+      <!-- Moon glow -->
+      <circle cx="580" cy="70" r="40" fill="#B8935A" opacity=".04"/>
+      <circle cx="580" cy="70" r="22" fill="#E8D5B7" opacity=".08"/>
+      <circle cx="580" cy="70" r="14" fill="#E8D5B7" opacity=".12"/>
+
+      <!-- Far mountains -->
+      <path d="M0,300 Q50,200 120,230 Q200,180 260,210 Q320,170 370,190 Q440,145 490,180 Q550,140 600,165 Q640,150 680,170 L680,580 L0,580Z" fill="#1E3328" opacity=".8"/>
+
+      <!-- Mid mountains -->
+      <path d="M0,360 Q60,280 130,310 Q210,260 280,295 Q340,250 400,280 Q470,235 530,268 Q590,240 640,262 L680,270 L680,580 L0,580Z" fill="#253D30" opacity=".9"/>
+
+      <!-- Foreground hills -->
+      <path d="M0,420 Q80,380 160,400 Q260,365 350,390 Q450,355 550,385 Q620,370 680,380 L680,580 L0,580Z" fill="#2E4E3F"/>
+
+      <!-- Mist layers -->
+      <path d="M0,445 Q100,430 200,448 Q320,432 440,450 Q560,438 680,445 L680,470 Q560,460 440,472 Q320,456 200,470 Q100,458 0,468Z" fill="#EEF2EE" opacity=".04"/>
+      <path d="M0,460 Q120,445 240,462 Q380,447 500,463 Q600,450 680,458 L680,480 Q600,474 500,485 Q380,468 240,482 Q120,470 0,478Z" fill="#EEF2EE" opacity=".06"/>
+      <path d="M0,480 Q140,465 280,480 Q420,465 560,482 L680,472 L680,495 L560,503 Q420,488 280,503 Q140,490 0,498Z" fill="#EEF2EE" opacity=".05"/>
+
+      <!-- Dawn horizon glow -->
+      <path d="M0,380 Q200,370 340,365 Q480,360 680,370 L680,400 Q480,390 340,385 Q200,390 0,398Z" fill="#B8935A" opacity=".06"/>
+
+      <!-- Pine trees silhouette -->
+      <g fill="#1C2B23" opacity=".9">
+        <path d="M30,480 L35,460 L33,460 L38,445 L36,445 L42,428 L36,428 L33,445 L31,445 L36,460 L34,460Z"/>
+        <path d="M55,490 L61,468 L59,468 L65,452 L63,452 L70,433 L63,433 L60,452 L58,452 L64,468 L62,468Z"/>
+        <path d="M590,475 L596,453 L594,453 L600,437 L598,437 L605,418 L598,418 L595,437 L593,437 L599,453 L597,453Z"/>
+        <path d="M618,485 L623,465 L621,465 L627,450 L625,450 L631,433 L625,433 L622,450 L620,450 L626,465 L624,465Z"/>
+        <path d="M642,478 L646,460 L644,460 L650,446 L648,446 L654,430 L648,430 L645,446 L643,446 L649,460 L647,460Z"/>
+      </g>
+
+      <!-- Dome tents on hill -->
+      <g opacity=".8">
+        <ellipse cx="200" cy="422" rx="28" ry="14" fill="#1C2B23"/>
+        <path d="M172,422 Q200,395 228,422" fill="#2E4E3F" stroke="#4A7A5F" stroke-width=".5"/>
+        <circle cx="200" cy="408" r="2.5" fill="#B8935A" opacity=".7"/>
+        <path d="M200,422 L200,410" stroke="#B8935A" stroke-width=".5" opacity=".4"/>
+
+        <ellipse cx="295" cy="410" rx="30" ry="15" fill="#1C2B23"/>
+        <path d="M265,410 Q295,382 325,410" fill="#2E4E3F" stroke="#4A7A5F" stroke-width=".5"/>
+        <circle cx="295" cy="395" r="3" fill="#B8935A" opacity=".65"/>
+
+        <ellipse cx="395" cy="403" rx="34" ry="16" fill="#1C2B23"/>
+        <path d="M361,403 Q395,373 429,403" fill="#2E4E3F" stroke="#4A7A5F" stroke-width=".5"/>
+        <circle cx="395" cy="387" r="3.5" fill="#B8935A" opacity=".6"/>
+        <rect x="378" y="395" width="34" height="8" rx="2" fill="#2E4E3F"/>
+
+        <ellipse cx="490" cy="408" rx="26" ry="13" fill="#1C2B23"/>
+        <path d="M464,408 Q490,383 516,408" fill="#2E4E3F" stroke="#4A7A5F" stroke-width=".5"/>
+        <circle cx="490" cy="396" r="2.5" fill="#B8935A" opacity=".55"/>
+      </g>
+
+      <!-- Waduk Darma lake reflection -->
+      <path d="M0,510 Q170,495 340,508 Q510,496 680,505 L680,540 Q510,530 340,540 Q170,528 0,535Z" fill="#2A4A5E" opacity=".3"/>
+      <path d="M80,520 Q140,516 200,520 Q260,516 320,520" stroke="#EEF2EE" stroke-width=".5" fill="none" opacity=".1"/>
+    </svg>
+
+    <div class="hero-alt">
+      <div class="hero-alt-num">1.200</div>
+      <div class="hero-alt-unit">mdpl</div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-tag">Palutungan · Kuningan · Jawa Barat</div>
+      <h1 class="hero-h1">Tidur di<br><em>Atas Awan</em></h1>
+      <p class="hero-desc">Glamping eksklusif kaki Gunung Ciremai · Panorama Waduk Darma · Sunrise dari tenda</p>
+
+      <div class="search">
+        <div class="search-field">
+          <div class="search-label">Check-in</div>
+          <div class="search-val"><i class="ti ti-calendar" aria-hidden="true"></i> 14 Jun 2026</div>
+        </div>
+        <div class="search-field">
+          <div class="search-label">Check-out</div>
+          <div class="search-val"><i class="ti ti-calendar" aria-hidden="true"></i> 15 Jun 2026</div>
+        </div>
+        <div class="search-field" style="border-right:none">
+          <div class="search-label">Tipe unit</div>
+          <div class="search-val"><i class="ti ti-home" aria-hidden="true"></i> Pilih unit</div>
+        </div>
+        <button class="search-go"><i class="ti ti-search" aria-hidden="true"></i> Cek Ketersediaan</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats reveal">
+    <div class="stat">
+      <div class="stat-num" data-target="1200">0</div>
+      <div class="stat-lbl">Meter di atas laut</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-target="3">0</div>
+      <div class="stat-lbl">Tipe unit glamping</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-target="300">0</div>
+      <div class="stat-lbl">Pengunjung Mei 2026<sup style="font-size:7px;color:var(--gold)">+300%</sup></div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-target="0">0</div>
+      <div class="stat-lbl">Biaya tiket masuk</div>
+    </div>
+  </div>
+
+  <!-- UNIT CARDS -->
+  <section class="sec" id="glamping">
+    <div class="units-header reveal">
+      <div>
+        <div class="sec-eye">Pilihan Glamping</div>
+        <h2 class="sec-h2">Tiga tipe,<br>satu <em>pengalaman</em></h2>
+      </div>
+      <div class="units-note">Semua sudah termasuk sarapan</div>
+    </div>
+
+    <div class="units">
+
+      <!-- Pine Dome -->
+      <div class="card reveal reveal-delay-1">
+        <div class="card-img">
+          <div class="card-img-inner ci-pine">
+            <svg width="100%" height="100%" viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="240" height="160" fill="#2E4E3F"/>
+              <circle cx="180" cy="35" r="18" fill="#B8935A" opacity=".07"/>
+              <circle cx="180" cy="35" r="10" fill="#B8935A" opacity=".1"/>
+              <path d="M0,100 Q60,80 120,95 Q180,78 240,92 L240,160 L0,160Z" fill="#253D30"/>
+              <ellipse cx="120" cy="130" rx="52" ry="24" fill="#1C2B23" opacity=".6"/>
+              <path d="M68,130 Q120,90 172,130" fill="#3A6050" stroke="#4A7A5F" stroke-width="1"/>
+              <rect x="100" y="120" width="40" height="10" rx="2" fill="#3A6050"/>
+              <rect x="112" y="110" width="8" height="10" fill="#2E4E3F"/>
+              <circle cx="120" cy="102" r="4" fill="#B8935A" opacity=".8"/>
+              <path d="M40,140 L44,125 L42,125 L47,112 L42,112 L40,125 L38,125Z" fill="#1C2B23"/>
+              <path d="M185,138 L189,122 L187,122 L192,109 L187,109 L185,122 L183,122Z" fill="#1C2B23"/>
+            </svg>
+          </div>
+          <span class="card-badge badge-pop">Favorit</span>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Pine Dome</div>
+          <div class="card-sub"><i class="ti ti-users" aria-hidden="true" style="font-size:11px"></i> 2 orang · Kamar mandi privat di luar</div>
+          <div class="card-tags">
+            <span class="tag">AC</span>
+            <span class="tag">WiFi</span>
+            <span class="tag">Kopi & Teh</span>
+            <span class="tag">Air Mineral</span>
+            <span class="tag">Kasur Hotel</span>
+          </div>
+          <div class="card-foot">
+            <div class="card-price">Rp 650rb <small>/ malam</small></div>
+            <button class="card-pick pick-outline">Pilih</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edelweiss -->
+      <div class="card best reveal reveal-delay-2">
+        <div class="card-img">
+          <div class="card-img-inner ci-edelweiss">
+            <svg width="100%" height="100%" viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="240" height="160" fill="#1E3529"/>
+              <path d="M0,90 Q40,65 90,80 Q140,58 180,72 Q210,60 240,68 L240,160 L0,160Z" fill="#182D22"/>
+              <ellipse cx="120" cy="128" rx="62" ry="26" fill="#152620" opacity=".7"/>
+              <path d="M58,128 Q120,84 182,128" fill="#2A4E3C" stroke="#4A7A5F" stroke-width="1"/>
+              <rect x="96" y="116" width="48" height="12" rx="2" fill="#2A4E3C"/>
+              <rect x="108" y="104" width="10" height="12" fill="#1E3529"/>
+              <circle cx="120" cy="96" r="5" fill="#B8935A" opacity=".9"/>
+              <path d="M20,140 L25,120 L23,120 L29,104 L23,104 L20,120 L18,120Z" fill="#152620" opacity=".8"/>
+              <path d="M192,138 L197,118 L195,118 L201,102 L195,102 L192,118 L190,118Z" fill="#152620" opacity=".8"/>
+              <path d="M80,115 Q90,108 100,113 Q110,106 120,111 Q130,104 140,110 Q150,104 160,110" stroke="#B8935A" stroke-width=".7" fill="none" opacity=".3"/>
+              <path d="M0,140 Q60,132 120,138 Q180,130 240,136 L240,160 L0,160Z" fill="#B8935A" opacity=".05"/>
+            </svg>
+          </div>
+          <span class="card-badge badge-best">Terlaris</span>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Edelweiss</div>
+          <div class="card-sub"><i class="ti ti-users" aria-hidden="true" style="font-size:11px"></i> 4 orang · Kamar mandi privat di luar</div>
+          <div class="card-tags">
+            <span class="tag">Portable AC</span>
+            <span class="tag">WiFi</span>
+            <span class="tag">Water Heater</span>
+            <span class="tag">Google TV</span>
+            <span class="tag">Amenities</span>
+          </div>
+          <div class="card-foot">
+            <div class="card-price">Rp 1,1jt <small>/ malam</small></div>
+            <button class="card-pick pick-fill">Pilih</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seruni -->
+      <div class="card reveal reveal-delay-3">
+        <div class="card-img">
+          <div class="card-img-inner ci-seruni">
+            <svg width="100%" height="100%" viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect width="240" height="160" fill="#7A5C42"/>
+              <rect width="240" height="160" fill="#6B4E35" opacity=".5"/>
+              <path d="M0,95 Q60,75 120,88 Q180,70 240,82 L240,160 L0,160Z" fill="#5A3E28" opacity=".8"/>
+              <rect x="62" y="88" width="116" height="58" rx="6" fill="#5A3E28" opacity=".7"/>
+              <path d="M62,100 Q120,72 178,100" fill="#8B6545" stroke="#B8935A" stroke-width="1"/>
+              <rect x="84" y="116" width="32" height="30" rx="2" fill="#4A3020" opacity=".8"/>
+              <rect x="124" y="116" width="32" height="30" rx="2" fill="#4A3020" opacity=".8"/>
+              <rect x="92" y="100" width="18" height="14" rx="2" fill="#E8D5B7" opacity=".2"/>
+              <rect x="130" y="100" width="18" height="14" rx="2" fill="#E8D5B7" opacity=".2"/>
+              <path d="M20,145 L24,128 L22,128 L27,115 L22,115 L20,128 L18,128Z" fill="#4A3020" opacity=".6"/>
+              <path d="M198,145 L202,128 L200,128 L205,115 L200,115 L198,128 L196,128Z" fill="#4A3020" opacity=".6"/>
+              <circle cx="62" cy="88" r="3" fill="#B8935A" opacity=".5"/>
+              <circle cx="178" cy="88" r="3" fill="#B8935A" opacity=".5"/>
+            </svg>
+          </div>
+          <span class="card-badge badge-new">Terbaru</span>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Seruni</div>
+          <div class="card-sub"><i class="ti ti-users" aria-hidden="true" style="font-size:11px"></i> 4 orang · Kamar mandi di dalam</div>
+          <div class="card-tags">
+            <span class="tag">Smart TV</span>
+            <span class="tag">AC</span>
+            <span class="tag">Water Heater</span>
+            <span class="tag">2 Bed Besar</span>
+            <span class="tag">Kamar Mandi Dalam</span>
+          </div>
+          <div class="card-foot">
+            <div class="card-price">Rp 1,5jt <small>/ malam</small></div>
+            <button class="card-pick pick-outline">Pilih</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi-sec" id="testimonials">
+    <div class="testi-eye reveal">Ulasan Tamu</div>
+    <div class="testis">
+      <div class="testi reveal reveal-delay-1">
+        <div class="testi-stars">
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+        </div>
+        <div class="testi-text">"Sunrise-nya bikin speechless. Buka pintu tenda langsung disambut kabut tipis dan pemandangan Waduk Darma. Worth it banget."</div>
+        <div class="testi-author">— Arfianto, Bandung · Edelweiss unit</div>
+      </div>
+      <div class="testi reveal reveal-delay-2">
+        <div class="testi-stars">
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+        </div>
+        <div class="testi-text">"Udara dinginnya segar banget, cocok buat healing sama keluarga. Seafood-nya fresh, anak-anak suka main di area agrowisata."</div>
+        <div class="testi-author">— Siti R., Jakarta · Seruni unit</div>
+      </div>
+      <div class="testi reveal reveal-delay-3">
+        <div class="testi-stars">
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+          <i class="ti ti-star testi-star" aria-hidden="true"></i>
+        </div>
+        <div class="testi-text">"Work from cafe dengan view gunung. WiFi kencang, kopi hangat, kabut turun. Ini definisi healing yang sebenarnya."</div>
+        <div class="testi-author">— Dimas W., Cirebon · Pine Dome</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FACILITIES -->
+  <section class="fac-sec" id="fasilitas">
+    <div class="fac-eye reveal">Fasilitas</div>
+    <h2 class="fac-h2 reveal reveal-delay-1">Lebih dari sekadar<br><em>menginap</em></h2>
+    <div class="fac-grid">
+      <div class="fac-item reveal reveal-delay-1">
+        <i class="ti ti-swimming fac-icon" aria-hidden="true"></i>
+        <div class="fac-lbl">Kolam Renang Alam</div>
+      </div>
+      <div class="fac-item reveal reveal-delay-2">
+        <i class="ti ti-roller-coaster fac-icon" aria-hidden="true"></i>
+        <div class="fac-lbl">Giant Swing</div>
+      </div>
+      <div class="fac-item reveal reveal-delay-1">
+        <i class="ti ti-tools-kitchen-2 fac-icon" aria-hidden="true"></i>
+        <div class="fac-lbl">Restoran Live Seafood</div>
+      </div>
+      <div class="fac-item reveal reveal-delay-2">
+        <i class="ti ti-plant fac-icon" aria-hidden="true"></i>
+        <div class="fac-lbl">Agrowisata Organik</div>
+      </div>
+      <div class="fac-item reveal reveal-delay-3">
+        <i class="ti ti-building-mosque fac-icon" aria-hidden="true"></i>
+        <div class="fac-lbl">Musala Dome</div>
+      </div>
+      <div class="fac-item reveal reveal-delay-4">
+        <i class="ti ti-camera fac-icon" aria-hidden="true"></i>
+        <div class="fac-lbl">Spot Foto & Sangkar Burung</div>
+      </div>
+      <div class="fac-item reveal reveal-delay-3">
+        <i class="ti ti-wifi fac-icon" aria-hidden="true"></i>
+        <div class="fac-lbl">High Speed WiFi</div>
+      </div>
+      <div class="fac-item reveal reveal-delay-4">
+        <i class="ti ti-parking fac-icon" aria-hidden="true"></i>
+        <div class="fac-lbl">Parkir Gratis</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING FORM -->
+  <section class="book-sec" id="booking">
+    <div class="reveal">
+      <div class="book-eye">Reservasi</div>
+      <h2 class="book-h2">Amankan malam <em style="font-style:italic;color:var(--moss)">Anda</em></h2>
+      <p class="book-sub">Isi form · Konfirmasi otomatis via WhatsApp dalam 1×24 jam</p>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Nama lengkap</label>
+          <input class="form-input" type="text" placeholder="Nama sesuai KTP"/>
+        </div>
+        <div class="form-field">
+          <label class="form-label">No. WhatsApp</label>
+          <input class="form-input" type="text" placeholder="08xx-xxxx-xxxx"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Check-in</label>
+          <input class="form-input" type="date"/>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Check-out</label>
+          <input class="form-input" type="date"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Tipe unit</label>
+          <select class="form-select" id="unit-sel">
+            <option value="650000">Pine Dome — 2 orang (Rp 650.000)</option>
+            <option value="1100000">Edelweiss — 4 orang (Rp 1.100.000)</option>
+            <option value="1500000">Seruni — 4 orang (Rp 1.500.000)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Jumlah unit</label>
+          <select class="form-select" id="qty-sel">
+            <option value="1">1 unit</option>
+            <option value="2">2 unit</option>
+            <option value="3">3 unit</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Catatan khusus</label>
+          <input class="form-input" type="text" placeholder="Honeymoon, ulang tahun, kebutuhan khusus..."/>
+        </div>
+      </div>
+      <button class="form-submit">
+        <i class="ti ti-send" aria-hidden="true"></i> Konfirmasi Pemesanan
+      </button>
+      <p class="form-note">Pembayaran via Transfer Bank · DP 50% untuk konfirmasi · Pelunasan saat check-in</p>
+    </div>
+
+    <!-- Summary -->
+    <div class="reveal reveal-delay-2">
+      <div class="summary">
+        <div class="sum-h">Ringkasan Pemesanan</div>
+        <div class="sum-row"><label>Tipe unit</label><strong id="s-unit">Pine Dome</strong></div>
+        <div class="sum-row"><label>Kapasitas</label><strong id="s-cap">2 orang</strong></div>
+        <div class="sum-row"><label>Jumlah unit</label><strong id="s-qty">1</strong></div>
+        <div class="sum-row"><label>Harga/malam</label><strong id="s-rate">Rp 650.000</strong></div>
+        <div class="sum-row"><label>Sarapan</label><strong>Sudah termasuk</strong></div>
+        <div class="sum-total">
+          <label>Estimasi total</label>
+          <strong id="s-total">Rp 650.000</strong>
+        </div>
+      </div>
+
+      <div class="sum-info" style="background:rgba(78,122,95,.1);border:.5px solid rgba(78,122,95,.2);border-radius:12px;padding:16px;margin-top:14px">
+        <div class="sum-info-lbl" style="color:var(--moss)">
+          <i class="ti ti-map-pin" aria-hidden="true"></i> Lokasi
+        </div>
+        <div class="sum-info-text" style="color:var(--ink);opacity:.7">
+          Jl. Danau Palutungan, Desa Cisantana<br>Kec. Cigugur, Kab. Kuningan 45552<br>
+          <span style="color:var(--moss);font-weight:500">~1,5 jam dari Cirebon</span>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--moss);font-weight:500">
+          <i class="ti ti-clock" aria-hidden="true"></i> Buka 10.00 – 21.00 WIB
+          <span style="margin-left:12px"><i class="ti ti-phone" aria-hidden="true"></i> +62 851-3690-7907</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer reveal">
+    <div>
+      <div class="foot-brand">Embun Sangga Langit</div>
+      <div class="foot-tagline">Glamping & Restaurant · Palutungan</div>
+    </div>
+    <div>
+      <div class="foot-head">Navigasi</div>
+      <ul class="foot-links">
+        <li>Tentang kami</li>
+        <li>Tipe glamping</li>
+        <li>Restoran & menu</li>
+        <li>Wahana & fasilitas</li>
+        <li>Galeri foto</li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-head">Kontak</div>
+      <ul class="foot-links">
+        <li>+62 851-3690-7907</li>
+        <li>@embunsanggalangit</li>
+        <li>Jl. Danau Palutungan</li>
+        <li>Kab. Kuningan, Jabar</li>
+      </ul>
+    </div>
+  </footer>
+  <div class="foot-copy">
+    <span>© 2026 Embun Sangga Langit · PT Sangkan Park</span>
+    <span>Buka setiap hari · 10.00 – 21.00 WIB</span>
+  </div>
+
+</div>
+
+<script>
+// === Booking Calculator ===
+const units = {
+  "650000":  {name:"Pine Dome",   cap:"2 orang"},
+  "1100000": {name:"Edelweiss",   cap:"4 orang"},
+  "1500000": {name:"Seruni",      cap:"4 orang"},
+};
+
+function fmt(n){return "Rp "+n.toLocaleString("id-ID")}
+
+function updateBooking(){
+  const rate = parseInt(document.getElementById("unit-sel").value);
+  const qty  = parseInt(document.getElementById("qty-sel").value);
+  const u    = units[rate];
+  document.getElementById("s-unit").textContent  = u.name;
+  document.getElementById("s-cap").textContent   = u.cap;
+  document.getElementById("s-qty").textContent   = qty;
+  document.getElementById("s-rate").textContent  = fmt(rate);
+  document.getElementById("s-total").textContent = fmt(rate * qty);
+}
+
+if(document.getElementById("unit-sel")){
+  document.getElementById("unit-sel").addEventListener("change", updateBooking);
+  document.getElementById("qty-sel").addEventListener("change", updateBooking);
+}
+
+// === Scroll Reveal (Intersection Observer) ===
+const revealEls = document.querySelectorAll('.reveal');
+if(revealEls.length){
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('show');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.08, rootMargin: '0px 0px -40px 0px'});
+  revealEls.forEach(el => revealObserver.observe(el));
+}
+
+// === Nav Scroll Effect ===
+const navbar = document.getElementById('navbar');
+if(navbar){
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+}
+
+// === Counter Animation ===
+function animateCounters(){
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    if(target === 0){ el.textContent = '0'; return; }
+    const duration = 1500;
+    const start = performance.now();
+    function update(now){
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target);
+      if(progress < 1) requestAnimationFrame(update);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// Trigger counters when stats section is visible
+const statsEl = document.querySelector('.stats');
+if(statsEl){
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        animateCounters();
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.3});
+  counterObserver.observe(statsEl);
+}
+
+// === Mobile Menu ===
+function toggleMobile(){
+  const links = document.getElementById('navLinks');
+  const ham = document.getElementById('hamburger');
+  if(links && ham){
+    links.classList.toggle('mobile-open');
+    ham.classList.toggle('active');
+  }
+}
+// Close mobile menu on link click
+document.querySelectorAll('.nav-links li').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navLinks')?.classList.remove('mobile-open');
+    document.getElementById('hamburger')?.classList.remove('active');
+  });
+});
+</script>
