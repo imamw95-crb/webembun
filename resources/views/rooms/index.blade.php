@@ -6,7 +6,7 @@
 <!-- Page Header -->
 <section class="relative py-20 lg:py-28 bg-gray-900 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-gray-900/95 to-emerald-950/90"></div>
-    <div class="absolute inset-0 bg-cover bg-center opacity-25" style="background-image: url('{{ asset('images/EMBUN/pemandangan.jpg') }}')"></div>
+    <div class="absolute inset-0 bg-cover bg-center opacity-25" style="background-image: url('{{ asset('images/EMBUN/pemandangan.webp') }}')"></div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <span class="hero-animate hero-animate--up hero-animate--delay-1 inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-emerald-300 rounded-full text-sm font-medium mb-4 border border-white/10">Unit Glamping</span>
         <h1 class="hero-animate hero-animate--up hero-animate--delay-2 text-4xl lg:text-5xl font-bold text-white font-['Playfair_Display'] mb-4">Pilihan Glamping</h1>

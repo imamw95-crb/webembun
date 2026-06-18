@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
 
     <!-- Preload hero images for faster LCP -->
-    <link rel="preload" as="image" href="{{ asset('storage/baner/dome%20luar.jpg') }}" fetchpriority="high">
-    <link rel="preload" as="image" href="{{ asset('storage/logo/logoweb.jpg') }}" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('storage/baner/dome%20luar.webp') }}" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('storage/logo/logoweb.webp') }}" fetchpriority="high">
 
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/react.jsx'])
     
@@ -31,7 +31,7 @@
         <div class="relative flex flex-col items-center">
             <!-- Logo -->
             <div class="loader-logo w-20 h-20 mb-6 rounded-2xl overflow-hidden shadow-2xl shadow-emerald-900/50 ring-2 ring-emerald-500/20">
-                <img src="{{ asset('storage/logo/logoweb.jpg') }}" alt="Embun Village" class="w-full h-full object-cover" loading="lazy">
+                <img src="{{ asset('storage/logo/logoweb.webp') }}" alt="Embun Village" class="w-full h-full object-cover" fetchpriority="high">
             </div>
             <!-- Brand -->
             <div class="text-center mb-8">
@@ -53,7 +53,7 @@
             <div class="flex justify-between h-16 lg:h-20 items-center">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                    <img src="{{ asset('storage/logo/logoweb.jpg') }}" alt="Embun Village" class="h-10 lg:h-12 w-auto object-contain" loading="eager">
+                    <img src="{{ asset('storage/logo/logoweb.webp') }}" alt="Embun Village" class="h-10 lg:h-12 w-auto object-contain" loading="eager">
                 </a>
 
                 <!-- Desktop Nav -->
@@ -142,5 +142,28 @@
     </footer>
 
     @stack('scripts')
+
+    {{-- Fast loading screen dismiss --}}
+    <script>
+        (function() {
+            const loader = document.getElementById('page-loader');
+            if (!loader) return;
+
+            function dismissLoader() {
+                loader.classList.add('loaded');
+                document.body.classList.remove('loading');
+                setTimeout(() => { loader.style.display = 'none'; }, 700);
+            }
+
+            // Dismiss immediately if already loaded, else wait for load event
+            if (document.readyState === 'complete') {
+                dismissLoader();
+            } else {
+                window.addEventListener('load', dismissLoader);
+                // Safety: dismiss after 3 seconds max regardless
+                setTimeout(dismissLoader, 3000);
+            }
+        })();
+    </script>
 </body>
 </html>

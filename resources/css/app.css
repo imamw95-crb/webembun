@@ -641,7 +641,7 @@
 }
 
 .loader-bar {
-    animation: loader-bar-fill 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: loader-bar-fill 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* Loading text pulse */

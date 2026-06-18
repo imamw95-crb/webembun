@@ -49,6 +49,181 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - Be concise in your explanations - focus on what's important rather than explaining obvious details.
 
+=== project-specific rules ===
+
+# Embun Sangga Langit (Embun Village) — Project Rules
+
+This is a **villa/glamping booking website** for Embun Sangga Langit, a real venue in Kuningan, West Java (kaki Gunung Ciremai, ±1.200 mdpl).
+
+## Domain Model & Relationships
+
+### Models (7 total)
+| Model | Table | Key Relations | Key Scopes/Features |
+|-------|-------|---------------|---------------------|
+| `Room` | `rooms` | `HasMany bookings`, `HasMany galleries` | `scopeAvailable()`, `scopeFeatured()`, auto-slug on create |
+| `Booking` | `bookings` | `BelongsTo room`, `BelongsTo user` | `scopeConfirmed()`, `scopePending()`, overlap-detection query |
+| `Gallery` | `galleries` | `BelongsTo room` | `is_featured` flag for homepage display |
+| `Facility` | `facilities` | — | `is_active` + `sort_order` controls display order |
+| `Testimonial` | `testimonials` | — | `is_active` filter, `rating` (integer 1-5) |
+| `Contact` | `contacts` | — | `is_read` flag for admin |
+| `User` | `users` | `HasMany bookings` | Filament auth |
+
+### Model Conventions (already established)
+- `$fillable` arrays for mass assignment (never use `$guarded`)
+- `$casts` for type coercion: `boolean`, `decimal:2`, `date`, `array` (amenities), `integer`
+- Global scopes not used — use local scopes: `scopeAvailable()`, `scopeFeatured()`, etc.
+- Auto-generate slug on `creating` event via `Str::slug()` in `booted()`
+- Room `amenities` is cast to `array` (stored as JSON), accessed as array in views
+
+## Routes & Controllers
+
+### Named Routes (always use `route()` — never hardcode URLs)
+- `home` — `/`
+- `about` — `/about`
+- `contact` — `/contact`
+- `contact.store` — POST `/contact`
+- `rooms.index` — `/rooms`
+- `rooms.show` — `/rooms/{slug}`
+- `booking.create` — `/booking/{slug}`
+- `booking.store` — POST `/booking`
+- `booking.success` — `/booking/success/{booking}`
+- `booking.check-availability` — GET `/booking/check-availability/{room}` (AJAX)
+
+### Controller Patterns
+- **`HomeController`**: Loads cached homepage data (rooms, facilities, testimonials, galleries) with `Cache::remember()` for 1 hour
+- **`RoomController`**: Uses `Cache::remember()` for `otherRooms` on show page (1 hour TTL)
+- **`BookingController`**: Math captcha (sum of 2 random numbers stored in session), overlap detection query, syncs to external API after creation
+- **Caching convention**: Use `Cache::remember('key', 3600, fn () => ...)` — never cache Eloquent models directly; call `->toArray()` first to avoid `__PHP_Incomplete_Class` errors
+
+### Booking Overlap Detection Query
+When checking availability, use this pattern (from `BookingController`):
+```php
+$overlapping = Booking::where('room_id', $room->id)
+    ->whereIn('status', ['pending', 'confirmed'])
+    ->where(function ($q) use ($request) {
+        $q->whereBetween('check_in', [$request->check_in, $request->check_out])
+            ->orWhereBetween('check_out', [$request->check_in, $request->check_out])
+            ->orWhere(function ($q2) use ($request) {
+                $q2->where('check_in', '<=', $request->check_in)
+                    ->where('check_out', '>=', $request->check_out);
+            });
+    })
+    ->exists();
+```
+
+## Filament Admin Panel
+
+### Resources (5 total, all flat structure in `app/Filament/Resources/`)
+| Resource | Navigation Group | Sort | Icon |
+|----------|-----------------|------|------|
+| `RoomResource` | Property | 1 | `heroicon-o-building-office` |
+| `BookingResource` | Property | 2 | `heroicon-o-calendar-days` |
+| `FacilityResource` | — | — | — |
+| `TestimonialResource` | — | — | — |
+| `ContactResource` | — | — | — |
+
+### Filament Conventions (already established)
+- Resources are **flat files** directly in `app/Filament/Resources/` (not in subdirectories)
+- Pages are in subdirectories: `{Resource}/Pages/{List/Create/Edit}{Resource}.php`
+- Uses Filament v3-style Schema-based forms: `form(Schema $schema): Schema`
+- Uses Filament v3-style Table: `table(Table $table): Table`
+- Forms use `Grid::make(N)` for multi-column layouts
+- Navigation icons use `heroicon-o-*` set
+- Booking status badges use color mapping: pending→warning, confirmed→success, cancelled→danger, completed→success
+- Payment status badges: unpaid→danger, paid→success, refunded→warning
+
+### External Reservations Page
+- `BookingResource` has a custom page `ListExternalReservations` at route `/admin/bookings/external`
+- Accessible via "External API Reservations" button in the booking list
+
+## External API Integration
+
+### Service: `app/Services/ExternalApiService.php`
+- **Base URL**: `config('services.embun_api.base_url')` — `https://embun.cloudnod.my.id/api`
+- **Auth**: X-API-Key header from `config('services.embun_api.api_key')`
+- **Methods**: `getReservations(params)`, `createReservation(data)`, `getRooms()`, `mapToExternalRoomId(localRoomName)`
+- **Room mapping**: "Pine Dome (Pindom)"→32, "Edelweiss"→33, "Seruni"→34
+- **Sync trigger**: `BookingController@store` calls `syncToExternalApi()` after local save
+- **Error handling**: Always wrapped in try/catch, logs warnings on failure, never blocks the user flow
+
+## Image System
+
+### Storage & Format
+- All images stored in `storage/app/public/` and symlinked to `public/storage`
+- **All images converted to WebP** (quality=80) via `php artisan app:optimize-images`
+- Image references in views use `.webp` extension
+- Directories: `baner/`, `gallery/`, `hero/`, `logo/`, `resto/`, `rooms/`, and `public/images/EMBUN/`
+- Hero images: `hero/hero-1.webp` through `hero/hero-3.webp`
+- Room images: `rooms/pine-dome.webp`, `rooms/edelweiss.webp`, `rooms/seruni.webp`
+
+### Artisan Command
+- `php artisan app:optimize-images` — Converts all JPG/PNG to WebP using GD library (quality=80)
+- When adding new images, always convert them to WebP and update view references
+
+## Database
+
+### Performance Indexes (from migration `2026_06_13_001621`)
+- `rooms`: composite `rooms_available_featured_sort_idx` (is_available, is_featured, sort_order)
+- `bookings`: composite `bookings_dates_idx` (check_in, check_out), `bookings_room_status_idx` (room_id, status)
+- `facilities`: composite `facilities_active_sort_idx` (is_active, sort_order)
+- `testimonials`: composite `testimonials_active_date_idx` (is_active, created_at)
+- `galleries`: composite `galleries_featured_date_idx` (is_featured, created_at)
+- `contacts`: `is_read`, `email`
+
+### Cache Driver
+- Uses `file` cache driver (not `database` — was changed to avoid unnecessary SQL queries)
+
+## Frontend Architecture
+
+### UI/UX Design System
+- **Style**: Organic Biophilic + Minimalism — nature-inspired, clean, warm
+- **Color Palette**: pine (#2E4E3F), moss (#4A7A5F), gold (#B8935A), linen (#F7F5F0)
+- **Typography**: Playfair Display (headings, serif) + Inter (body)
+- **Do not define `@apply` classes inside inline `<style>` tags in Blade views** — Tailwind v4 won't process them. All `@apply` classes must be in `resources/css/app.css`
+
+### React Integration
+- React mounts via `#react-root` in Blade layout
+- Uses `BlurText.jsx` component from React Bits for animated headlines in hero banner slides
+- Entry point: `resources/js/react.jsx`
+- Custom event `slide-changed` coordinates active slide between Alpine.js carousel and React
+- **After changing React/JSX files, run `npm run build`** to regenerate Vite bundles
+
+### Loading Screen
+- Professional page loader with animated logo, progress bar, fade-out transition
+- Defined in `layouts/app.blade.php`, CSS in `app.css`, JS in `app.js`
+- Min 1.6s display, hides on `window.load` event with 3s max safety timeout
+
+### Scroll & Animation System
+- **Scroll Reveal**: Classes `reveal-section`, `reveal-left`, `reveal-right`, `reveal-scale` with Intersection Observer
+- **Parallax BG**: `data-parallax-bg` + `data-parallax-speed` attributes
+- **Counter Animation**: `data-count-to`, `data-count-duration`, `data-count-suffix` attributes
+- **Scroll Progress Bar**: Fixed 3px gradient bar at top
+- **Anchor Scroll Offset**: `scroll-padding-top: 80px`
+- **Respects `prefers-reduced-motion`** — all animations disabled for accessibility
+
+## Optimization Commands
+
+Run these after making changes:
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan event:cache
+php artisan filament:cache-components
+npm run build          # Rebuild Vite assets after CSS/JS changes
+composer run optimize  # Runs all above Artisan commands at once
+```
+
+For production: `APP_ENV=production`, `APP_DEBUG=false`, `LOG_LEVEL=warning`
+
+## Known Troubleshooting
+- **"Access is denied (code: 5)" on storage/views**: `icacls storage /grant "Everyone:(OI)(CI)F" /T`
+- **"Unsupported operand types: string * int"**: Stale compiled view — run `php artisan view:clear`
+- **`__PHP_Incomplete_Class` errors**: Don't cache Eloquent models directly; use `->toArray()` before caching
+- **MethodNotAllowedHttpException**: Stale route cache — run `php artisan route:clear`
+- **Stale CSS after editing views**: Run `npm run build` to rebuild Vite assets
+- **Browser showing cached error pages**: Use `?cb=N` cache-busting query param or clear browser cache
+
 === boost rules ===
 
 # Laravel Boost

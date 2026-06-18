@@ -12,7 +12,7 @@ const slideTexts = [
     id: 0,
     parts: [
       { text: 'Embun', className: 'block text-5xl sm:text-6xl lg:text-8xl font-bold text-white font-[\'Playfair_Display\'] leading-[1.1] mb-2 text-shadow-lg' },
-      { text: 'Sangga Langit', className: 'block text-4xl sm:text-5xl lg:text-7xl font-bold font-[\'Playfair_Display\'] leading-[1.1] bg-gradient-to-r from-emerald-300 via-amber-200 to-emerald-300 bg-clip-text text-transparent bg-[length:200%_auto] text-shadow-lg hero-shimmer' },
+      { text: 'Sangga Langit', className: 'block text-4xl sm:text-5xl lg:text-7xl font-bold font-[\'Playfair_Display\'] leading-[1.1] bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-300 bg-clip-text text-transparent bg-[length:200%_auto] drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] hero-shimmer' },
     ],
     delay: 80,
   },
@@ -49,7 +49,8 @@ function App() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsReady(true), 4200);
+    // Hide loading screen as soon as page is ready, with a brief delay for smooth transition
+    const timer = setTimeout(() => setIsReady(true), 800);
     return () => clearTimeout(timer);
   }, []);
 

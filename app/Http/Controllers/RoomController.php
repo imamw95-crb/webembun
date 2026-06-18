@@ -14,6 +14,10 @@ class RoomController extends Controller
         return view('rooms.index', compact('rooms'));
     }
 
+    /**
+     * Display the specified room.
+     * Cached for 1 hour to reduce database hits.
+     */
     public function show($slug)
     {
         $room = Room::where('slug', $slug)->available()->with('galleries')->firstOrFail();

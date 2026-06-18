@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookingRequest;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Services\ExternalApiService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
 {
@@ -24,24 +24,8 @@ class BookingController extends Controller
         return view('bookings.create', compact('room', 'num1', 'num2'));
     }
 
-    public function store(Request $request)
+    public function store(StoreBookingRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'room_id' => 'required|exists:rooms,id',
-            'guest_name' => 'required|string|max:255',
-            'guest_email' => 'required|email|max:255',
-            'guest_phone' => 'nullable|string|max:20',
-            'check_in' => 'required|date|after_or_equal:today',
-            'check_out' => 'required|date|after:check_in',
-            'guests' => 'required|integer|min:1|max:10',
-            'notes' => 'nullable|string|max:1000',
-            'captcha' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
         // Verify math captcha
         $expected = session()->pull('booking_captcha');
         if ($expected === null || (int) $request->captcha !== $expected) {
@@ -49,9 +33,7 @@ class BookingController extends Controller
         }
 
         $room = Room::findOrFail($request->room_id);
-        $checkIn = Carbon::parse($request->check_in);
-        $checkOut = Carbon::parse($request->check_out);
-        $nights = $checkIn->diffInDays($checkOut);
+        $nights = Carbon::parse($request->check_in)->diffInDays(Carbon::parse($request->check_out));
         $totalPrice = $room->price_per_night * $nights;
 
         // Check for overlapping bookings
