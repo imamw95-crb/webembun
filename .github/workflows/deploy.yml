@@ -37,7 +37,7 @@ jobs:
       - name: Deploy via Rsync over SSH
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avzr --delete --exclude=.env* --exclude=.git* --exclude=deploy_key* --exclude=node_modules --exclude=vendor --exclude=.github --exclude=storage/*.key --exclude=storage/app/public --exclude=storage/framework/cache/data/* --exclude=storage/framework/sessions/* --exclude=storage/framework/views/* --exclude=storage/logs/*
+          switches: -avzr --delete --exclude=.env* --exclude=.git* --exclude=deploy_key* --exclude=node_modules --exclude=vendor --exclude=.github --exclude=storage/*.key --exclude=storage/app/public --exclude=storage/framework/cache/data/* --exclude=storage/framework/sessions/* --exclude=storage/framework/views/* --exclude=storage/logs/* --exclude=email --exclude=/index.php --exclude=/.htaccess
           path: ./
           remote_path: ${{ env.REMOTE_PATH }}
           remote_host: 153.92.13.216
