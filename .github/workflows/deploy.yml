@@ -1,0 +1,68 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  PHP_PATH: /opt/alt/php83/usr/bin/php
+  REMOTE_PATH: /home/u102361870/domains/embunvillage.com/public_html
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install NPM dependencies & build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy via Rsync over SSH
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete --exclude=.env* --exclude=.git* --exclude=deploy_key* --exclude=node_modules --exclude=vendor --exclude=.github --exclude=storage/*.key --exclude=storage/app/public --exclude=storage/framework/cache/data/* --exclude=storage/framework/sessions/* --exclude=storage/framework/views/* --exclude=storage/logs/*
+          path: ./
+          remote_path: ${{ env.REMOTE_PATH }}
+          remote_host: 153.92.13.216
+          remote_port: 65002
+          remote_user: u102361870
+          remote_key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Post-deploy — install deps, build, cache, migrate
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: 153.92.13.216
+          port: 65002
+          username: u102361870
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd ${{ env.REMOTE_PATH }}
+
+            # Install production PHP dependencies
+            /opt/alt/php83/usr/bin/php /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction
+
+            # Optimize Laravel
+            ${{ env.PHP_PATH }} artisan optimize:clear
+            ${{ env.PHP_PATH }} artisan config:cache
+            ${{ env.PHP_PATH }} artisan route:cache
+            ${{ env.PHP_PATH }} artisan view:cache
+            ${{ env.PHP_PATH }} artisan event:cache
+            ${{ env.PHP_PATH }} artisan filament:cache-components
+
+            # Run migrations
+            ${{ env.PHP_PATH }} artisan migrate --force
+
+            # Set permissions
+            chmod -R 775 storage bootstrap/cache
