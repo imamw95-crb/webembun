@@ -25,6 +25,20 @@
 </IfModule>
 
 # ----------------------------------------------------------------------
+# MIME Types — ensure ES modules load correctly (Vite build)
+# Hostinger CDN may serve .js as application/x-javascript which
+# browsers reject for module scripts — force the correct type.
+# ----------------------------------------------------------------------
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+</IfModule>
+<IfModule mod_headers.c>
+    <FilesMatch "\.js$">
+        Header always set Content-Type "application/javascript"
+    </FilesMatch>
+</IfModule>
+
+# ----------------------------------------------------------------------
 # Caching Headers — improve page load speed
 # ----------------------------------------------------------------------
 

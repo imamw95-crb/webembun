@@ -190,6 +190,9 @@ document.addEventListener('click', (e) => {
     let interval;
     const SLIDE_DURATION = 6000; // 6 seconds per slide
 
+    // Debug: confirm slide system initialized
+    console.log('[Embun] Hero slideshow initialized,', slideCount, 'slides');
+
     function goToSlide(index) {
         if (index === current) return;
         if (index < 0 || index >= slideCount) return;
