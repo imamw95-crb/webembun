@@ -29,6 +29,11 @@ jobs:
           npm ci
           npm run build
 
+      - name: Add production server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p 65002 -H 153.92.13.216 >> ~/.ssh/known_hosts
+
       - name: Deploy via Rsync over SSH
         uses: burnett01/rsync-deployments@7.0.1
         with:
@@ -40,7 +45,7 @@ jobs:
           remote_user: u102361870
           remote_key: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Post-deploy — install deps, build, cache, migrate
+      - name: Post-deploy — install deps, cache, migrate
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: 153.92.13.216
