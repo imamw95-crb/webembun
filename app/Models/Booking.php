@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\BookingFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
+    /** @use HasFactory<BookingFactory> */
+    use HasFactory;
+
     protected $fillable = [
         'user_id', 'room_id', 'guest_name', 'guest_email', 'guest_phone',
         'check_in', 'check_out', 'guests', 'total_price', 'status',

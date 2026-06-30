@@ -31,6 +31,11 @@ class HomeController extends Controller
 
     public function contact()
     {
-        return view('contact');
+        // Generate math captcha
+        $num1 = rand(1, 9);
+        $num2 = rand(1, 9);
+        session()->put('contact_captcha', $num1 + $num2);
+
+        return view('contact', compact('num1', 'num2'));
     }
 }

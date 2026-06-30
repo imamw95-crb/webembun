@@ -86,6 +86,18 @@
                             @error('message') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div class="scroll-reveal scroll-reveal--fade-in-up" data-delay="250">
+                            <div class="flex items-center space-x-3">
+                                <div class="flex-1">
+                                    <input type="text" name="captcha" value="{{ old('captcha') }}" required placeholder="Verifikasi: Berapa {{ $num1 }} + {{ $num2 }}? *"
+                                        class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all @error('captcha') border-red-300 @enderror">
+                                </div>
+                                <div class="px-4 py-2.5 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-700 font-semibold whitespace-nowrap select-none">
+                                    {{ $num1 }} + {{ $num2 }} = ?
+                                </div>
+                            </div>
+                            @error('captcha') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="scroll-reveal scroll-reveal--fade-in-up" data-delay="300">
                             <button type="submit" class="btn-press w-full px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-xl hover:from-emerald-700 hover:to-teal-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl">
                                 Kirim Pesan
                             </button>

@@ -27,6 +27,8 @@ Homestead.yaml
 Thumbs.db
 /deploy_key
 /deploy_key.pub
+/deploy.sh
+/deploy.php
 /index.php
 /.htaccess
 /email

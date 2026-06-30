@@ -9,6 +9,12 @@ class ContactController extends Controller
 {
     public function store(Request $request)
     {
+        // Verify math captcha
+        $expected = session()->pull('contact_captcha');
+        if ($expected === null || (int) $request->captcha !== $expected) {
+            return back()->withErrors(['captcha' => 'Jawaban verifikasi salah. Silakan coba lagi.'])->withInput();
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
