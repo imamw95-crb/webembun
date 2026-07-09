@@ -14,7 +14,7 @@ class Booking extends Model
 
     protected $fillable = [
         'user_id', 'room_id', 'guest_name', 'guest_email', 'guest_phone',
-        'check_in', 'check_out', 'guests', 'total_price', 'status',
+        'check_in', 'check_out', 'guests', 'total_price', 'unique_code', 'status',
         'notes', 'payment_method', 'payment_status',
     ];
 
@@ -22,6 +22,7 @@ class Booking extends Model
         'check_in' => 'date',
         'check_out' => 'date',
         'total_price' => 'decimal:2',
+        'unique_code' => 'integer',
     ];
 
     public function room(): BelongsTo

@@ -28,6 +28,7 @@ class BookingFactory extends Factory
             'check_out' => $checkOut->format('Y-m-d'),
             'guests' => fake()->numberBetween(1, 4),
             'total_price' => fake()->randomFloat(2, 650000, 4500000),
+            'unique_code' => fake()->numberBetween(100, 999),
             'status' => 'pending',
             'payment_status' => 'unpaid',
             'notes' => fake()->optional()->sentence(),

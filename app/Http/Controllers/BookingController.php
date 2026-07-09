@@ -53,6 +53,9 @@ class BookingController extends Controller
             return back()->with('error', 'Maaf, kamar sudah dibooking pada tanggal tersebut. Silakan pilih tanggal lain.')->withInput();
         }
 
+        // Generate 3-digit unique code (100-999) for payment identification
+        $uniqueCode = rand(100, 999);
+
         $booking = Booking::create([
             'user_id' => auth()->id(),
             'room_id' => $room->id,
@@ -63,6 +66,7 @@ class BookingController extends Controller
             'check_out' => $request->check_out,
             'guests' => $request->guests,
             'total_price' => $totalPrice,
+            'unique_code' => $uniqueCode,
             'status' => 'pending',
             'notes' => $request->notes,
         ]);
@@ -141,6 +145,7 @@ class BookingController extends Controller
                 'check_out' => $booking->check_out->format('Y-m-d'),
                 'guests' => $booking->guests,
                 'total_price' => (int) $booking->total_price,
+                'unique_code' => $booking->unique_code,
                 'notes' => $booking->notes,
             ];
 
