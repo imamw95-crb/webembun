@@ -36,8 +36,8 @@ class BookingController extends Controller
         $nights = Carbon::parse($request->check_in)->diffInDays(Carbon::parse($request->check_out));
         $totalPrice = $room->price_per_night * $nights;
 
-        // Check for overlapping bookings
-        $overlapping = Booking::where('room_id', $room->id)
+        // Check for overlapping bookings in local database
+        $localOverlapping = Booking::where('room_id', $room->id)
             ->whereIn('status', ['pending', 'confirmed'])
             ->where(function ($q) use ($request) {
                 $q->whereBetween('check_in', [$request->check_in, $request->check_out])
@@ -49,8 +49,20 @@ class BookingController extends Controller
             })
             ->exists();
 
-        if ($overlapping) {
+        if ($localOverlapping) {
             return back()->with('error', 'Maaf, kamar sudah dibooking pada tanggal tersebut. Silakan pilih tanggal lain.')->withInput();
+        }
+
+        // Check for overlapping bookings on external API
+        $externalAvailable = app(ExternalApiService::class)
+            ->checkExternalAvailability(
+                $room->name,
+                $request->check_in,
+                $request->check_out
+            );
+
+        if (! $externalAvailable) {
+            return back()->with('error', 'Maaf, kamar sudah dibooking pada tanggal tersebut (dari sistem lain). Silakan pilih tanggal lain.')->withInput();
         }
 
         // Generate 3-digit unique code (100-999) for payment identification
@@ -88,7 +100,8 @@ class BookingController extends Controller
             'check_out' => 'required|date|after:check_in',
         ]);
 
-        $overlapping = Booking::where('room_id', $room->id)
+        // Check local database
+        $localOverlapping = Booking::where('room_id', $room->id)
             ->whereIn('status', ['pending', 'confirmed'])
             ->where(function ($q) use ($request) {
                 $q->whereBetween('check_in', [$request->check_in, $request->check_out])
@@ -100,19 +113,29 @@ class BookingController extends Controller
             })
             ->exists();
 
+        // Check external API
+        $externalAvailable = app(ExternalApiService::class)
+            ->checkExternalAvailability(
+                $room->name,
+                $request->check_in,
+                $request->check_out
+            );
+
+        $available = ! $localOverlapping && $externalAvailable;
+
         $checkIn = Carbon::parse($request->check_in);
         $checkOut = Carbon::parse($request->check_out);
         $nights = $checkIn->diffInDays($checkOut);
         $totalPrice = $room->price_per_night * $nights;
 
         return response()->json([
-            'available' => ! $overlapping,
+            'available' => $available,
             'nights' => $nights,
             'total_price' => $totalPrice,
             'price_per_night' => $room->price_per_night,
-            'message' => $overlapping
-                ? 'Maaf, kamar sudah dibooking pada tanggal tersebut.'
-                : 'Kamar tersedia untuk tanggal tersebut!',
+            'message' => $available
+                ? 'Kamar tersedia untuk tanggal tersebut!'
+                : 'Maaf, kamar sudah dibooking pada tanggal tersebut.',
         ]);
     }
 

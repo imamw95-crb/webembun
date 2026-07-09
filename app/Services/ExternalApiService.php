@@ -207,4 +207,82 @@ class ExternalApiService
 
         return strtolower(trim($name));
     }
+
+    /**
+     * Get the external room ID for a local room name (any status).
+     */
+    public function getExternalRoomId(string $localRoomName): ?int
+    {
+        $rooms = $this->getRooms();
+
+        if ($rooms === null || empty($rooms)) {
+            return null;
+        }
+
+        $normalized = $this->normalizeRoomName($localRoomName);
+
+        foreach ($rooms as $room) {
+            $externalType = strtolower(trim($room['room_type_name'] ?? ''));
+            if ($externalType === $normalized) {
+                return (int) $room['id'];
+            }
+        }
+
+        // Fallback: try partial match
+        foreach ($rooms as $room) {
+            $externalType = strtolower(trim($room['room_type_name'] ?? ''));
+            if (str_contains($externalType, $normalized) || str_contains($normalized, $externalType)) {
+                return (int) $room['id'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Check if a room is available on the external API for given dates.
+     *
+     * @param  string  $localRoomName  Local room name (e.g., "Pine Dome (Pindom)")
+     * @param  string  $checkIn  Check-in date (Y-m-d)
+     * @param  string  $checkOut  Check-out date (Y-m-d)
+     * @return bool True if available (no overlapping reservation)
+     */
+    public function checkExternalAvailability(string $localRoomName, string $checkIn, string $checkOut): bool
+    {
+        $externalRoomId = $this->getExternalRoomId($localRoomName);
+
+        if ($externalRoomId === null) {
+            // If we can't map the room, assume it's available
+            return true;
+        }
+
+        $reservations = $this->getReservations(['per_page' => 100]);
+
+        if ($reservations === null || empty($reservations)) {
+            return true;
+        }
+
+        foreach ($reservations as $reservation) {
+            // Only check reservations for this room
+            if ((int) ($reservation['room_id'] ?? 0) !== $externalRoomId) {
+                continue;
+            }
+
+            // Only check pending/confirmed reservations
+            $status = $reservation['status'] ?? '';
+            if (! in_array($status, ['pending', 'confirmed'])) {
+                continue;
+            }
+
+            $extCheckIn = date('Y-m-d', strtotime($reservation['check_in'] ?? ''));
+            $extCheckOut = date('Y-m-d', strtotime($reservation['check_out'] ?? ''));
+
+            // Check for overlap
+            if ($checkIn < $extCheckOut && $checkOut > $extCheckIn) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
