@@ -1,7 +1,3 @@
-<div>
-    {{ $this->table }}
-</div>
-
 <div class="space-y-4">
     @if(count($externalReservations) === 0)
         <div class="p-6 text-center text-gray-500">

@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Booking;
 use App\Models\Room;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +16,7 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         $checkIn = fake()->dateTimeBetween('now', '+1 month');
-        $checkOut = (clone $checkIn)->modify('+' . fake()->numberBetween(1, 3) . ' days');
+        $checkOut = (clone $checkIn)->modify('+'.fake()->numberBetween(1, 3).' days');
 
         return [
             'room_id' => Room::factory(),

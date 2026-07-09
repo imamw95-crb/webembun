@@ -50,6 +50,35 @@
                 </div>
             </div>
 
+            <!-- Payment Information -->
+            <div class="scroll-reveal scroll-reveal--fade-in-up bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8 text-left">
+                <div class="flex items-center gap-2 mb-4">
+                    <x-heroicon-o-banknotes class="w-5 h-5 text-amber-600" />
+                    <h3 class="font-semibold text-gray-900">Informasi Pembayaran</h3>
+                </div>
+                <p class="text-sm text-gray-600 mb-3">Silakan lakukan transfer ke rekening berikut untuk konfirmasi pemesanan Anda:</p>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Bank</span>
+                        <span class="font-medium text-gray-900">BCA</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Nama Pemilik</span>
+                        <span class="font-medium text-gray-900">Hanyen Tenggono</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">No. Rekening</span>
+                        <span class="font-mono font-bold text-gray-900 tracking-wider">1341463535</span>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-amber-200">
+                    <p class="text-xs text-gray-500">
+                        Konfirmasi setelah transfer via WhatsApp:
+                        <a href="https://wa.me/6285136907907" target="_blank" class="text-emerald-600 hover:text-emerald-700 font-medium underline">+62 851-3690-7907</a>
+                    </p>
+                </div>
+            </div>
+
             <div class="scroll-reveal scroll-reveal--fade-in-up flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('home') }}" class="btn-press inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-xl hover:from-emerald-700 hover:to-teal-600 transition-all font-medium shadow-lg">
                     Kembali ke Beranda

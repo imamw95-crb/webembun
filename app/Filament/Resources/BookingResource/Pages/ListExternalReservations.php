@@ -6,12 +6,9 @@ use App\Filament\Resources\BookingResource;
 use App\Services\ExternalApiService;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\Page;
-use Filament\Tables;
 
-class ListExternalReservations extends Page implements Tables\Contracts\HasTable
+class ListExternalReservations extends Page
 {
-    use Tables\Concerns\InteractsWithTable;
-
     protected static string $resource = BookingResource::class;
 
     protected string $view = 'filament.resources.booking-resource.pages.list-external-reservations';
@@ -43,16 +40,6 @@ class ListExternalReservations extends Page implements Tables\Contracts\HasTable
     public function updatedFilterStatus(): void
     {
         $this->loadReservations();
-    }
-
-    protected function getTableQuery(): never
-    {
-        throw new \RuntimeException('ListExternalReservations uses external API data, not Eloquent.');
-    }
-
-    protected function getTableColumns(): array
-    {
-        return [];
     }
 
     protected function getHeaderActions(): array

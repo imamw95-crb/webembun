@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Room;
 use App\Models\Booking;
-use App\Models\User;
+use App\Models\Room;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -119,7 +118,7 @@ class BookingTest extends TestCase
             'price_per_night' => 1000000,
         ]);
 
-        $response = $this->get(route('booking.check-availability', $room) . '?check_in=' . now()->addDay()->format('Y-m-d') . '&check_out=' . now()->addDays(2)->format('Y-m-d'));
+        $response = $this->get(route('booking.check-availability', $room).'?check_in='.now()->addDay()->format('Y-m-d').'&check_out='.now()->addDays(2)->format('Y-m-d'));
 
         $response->assertJsonStructure([
             'available', 'nights', 'total_price', 'price_per_night', 'message',
@@ -137,7 +136,7 @@ class BookingTest extends TestCase
             'check_out' => now()->addDays(3)->format('Y-m-d'),
         ]);
 
-        $response = $this->get(route('booking.check-availability', $room) . '?check_in=' . now()->addDay()->format('Y-m-d') . '&check_out=' . now()->addDays(3)->format('Y-m-d'));
+        $response = $this->get(route('booking.check-availability', $room).'?check_in='.now()->addDay()->format('Y-m-d').'&check_out='.now()->addDays(3)->format('Y-m-d'));
 
         $response->assertJson(['available' => false]);
     }
