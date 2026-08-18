@@ -14,14 +14,14 @@
         </div>
         <div class="scroll-reveal scroll-reveal--fade-in-up" data-aos="fade-up" data-aos-delay="150" data-delay="150">
             <p class="text-lg lg:text-xl text-emerald-100/80 mb-8 max-w-2xl mx-auto">
-                Pesan sekarang dan nikmati keindahan alam Embun Sangga Langit di kaki Gunung Ciremai.
+                Jelajahi keindahan alam Embun Sangga Langit di kaki Gunung Ciremai.
                 Dapatkan pengalaman glamping dengan harga mulai Rp650.000/malam!
             </p>
         </div>
         <div class="scroll-reveal scroll-reveal--fade-in-up" data-aos="fade-up" data-aos-delay="300" data-delay="300">
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('rooms.index') }}" class="inline-flex items-center justify-center px-8 py-4 bg-white text-emerald-800 rounded-xl hover:bg-emerald-50 transition-all duration-300 font-semibold text-lg shadow-xl hover:shadow-2xl btn-press micro-bounce">
-                    Pesan Glamping Sekarang
+                    Lihat Glamping
                     <x-heroicon-o-arrow-right class="w-5 h-5 ml-2" />
                 </a>
                 <a href="{{ route('contact') }}" class="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white rounded-xl hover:bg-white/10 transition-all duration-300 font-medium btn-press">

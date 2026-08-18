@@ -140,7 +140,7 @@
                 <!-- CTA -->
                 <div class="hero-item hero-item--delay-5 mt-10 text-shadow-sm">
                     <a href="{{ route('rooms.index') }}" class="inline-flex items-center px-6 py-3 bg-teal-600/80 backdrop-blur-sm text-white rounded-xl hover:bg-teal-500 transition-all duration-300 font-medium border border-teal-400/30 btn-press">
-                        Pesan Sekarang
+                        Lihat Glamping
                         <x-heroicon-o-arrow-right class="w-4 h-4 ml-2" />
                     </a>
                 </div>

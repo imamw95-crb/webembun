@@ -41,7 +41,7 @@
                         @if($room->size_sqm)<span class="flex items-center"><x-heroicon-o-arrows-pointing-out class="w-4 h-4 mr-1" /> {{ $room->size_sqm }} m²</span>@endif
                     </div>
                     <a href="{{ route('rooms.show', $room->slug) }}" class="btn-press w-full inline-flex items-center justify-center px-4 py-2.5 bg-emerald-50 text-emerald-700 rounded-xl hover:bg-emerald-100 transition-colors font-medium text-sm">
-                        Detail & Booking
+                        Lihat Detail
                         <x-heroicon-o-chevron-right class="w-4 h-4 ml-2" />
                     </a>
                 </div>

@@ -86,12 +86,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('booking.create', $room->slug) }}" 
-                       class="btn-press w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-xl hover:from-emerald-700 hover:to-teal-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl {{ !$room->is_available ? 'opacity-50 cursor-not-allowed' : '' }}"
-                       @if(!$room->is_available) onclick="return false" @endif>
-                        <x-heroicon-o-calendar-days class="w-5 h-5 mr-2" />
-                        {{ $room->is_available ? 'Pesan Sekarang' : 'Tidak Tersedia' }}
-                    </a>
+
                 </div>
             </div>
         </div>

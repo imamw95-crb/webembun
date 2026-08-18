@@ -62,9 +62,6 @@
                     <a href="{{ route('rooms.index') }}" class="nav-link {{ request()->routeIs('rooms.*') ? 'active' : '' }}">Glamping</a>
                     <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">Tentang</a>
                     <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Kontak</a>
-                    <a href="{{ route('rooms.index') }}" class="btn-primary btn-press micro-bounce">
-                        Pesan Sekarang
-                    </a>
                 </div>
 
                 <!-- Mobile toggle -->
@@ -82,7 +79,6 @@
                 <a href="{{ route('rooms.index') }}" class="block px-4 py-2 rounded-lg hover:bg-emerald-50 text-gray-700 hover:text-emerald-700 transition" @click="open = false">Glamping</a>
                 <a href="{{ route('about') }}" class="block px-4 py-2 rounded-lg hover:bg-emerald-50 text-gray-700 hover:text-emerald-700 transition" @click="open = false">Tentang</a>
                 <a href="{{ route('contact') }}" class="block px-4 py-2 rounded-lg hover:bg-emerald-50 text-gray-700 hover:text-emerald-700 transition" @click="open = false">Kontak</a>
-                <a href="{{ route('rooms.index') }}" class="block w-full text-center px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-emerald-200/50 transition-all" @click="open = false">Pesan Sekarang</a>
             </div>
         </div>
     </nav>
