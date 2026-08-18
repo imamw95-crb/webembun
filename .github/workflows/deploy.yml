@@ -49,6 +49,7 @@ jobs:
 
             # Optimize Laravel
             ${{ env.PHP_PATH }} artisan optimize:clear
+            ${{ env.PHP_PATH }} artisan cache:clear
             ${{ env.PHP_PATH }} artisan config:cache
             ${{ env.PHP_PATH }} artisan route:cache
             ${{ env.PHP_PATH }} artisan view:cache

@@ -23,7 +23,7 @@ class RoomController extends Controller
         $room = Room::where('slug', $slug)->available()->with('galleries')->firstOrFail();
 
         $otherRooms = Cache::remember('other_rooms_'.$room->id, 3600, function () use ($room) {
-            return Room::where('id', '!=', $room->id)->available()->take(3)->get();
+            return Room::where('id', '!=', $room->id)->available()->take(3)->get()->toArray();
         });
 
         return view('rooms.show', compact('room', 'otherRooms'));

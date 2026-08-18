@@ -94,23 +94,23 @@
 </section>
 
 <!-- Other Rooms -->
-@if($otherRooms->count() > 0)
+@if(count($otherRooms) > 0)
 <section class="py-12 lg:py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="scroll-reveal scroll-reveal--fade-in-up text-2xl lg:text-3xl font-bold text-gray-900 font-['Playfair_Display'] mb-8" data-aos="fade-up">Unit Glamping Lainnya</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-stagger="150">
             @foreach($otherRooms as $other)
-            <a href="{{ route('rooms.show', $other->slug) }}" class="scroll-reveal scroll-reveal--fade-in-up card-lift group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+            <a href="{{ route('rooms.show', $other['slug']) }}" class="scroll-reveal scroll-reveal--fade-in-up card-lift group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                 <div class="img-zoom h-48 overflow-hidden">
-                    @if($other->featured_image)
-                        <img src="{{ asset('storage/' . $other->featured_image) }}" alt="{{ $other->name }}" class="w-full h-full object-cover" loading="lazy">
+                    @if($other['featured_image'])
+                        <img src="{{ asset('storage/' . $other['featured_image']) }}" alt="{{ $other['name'] }}" class="w-full h-full object-cover" loading="lazy">
                     @else
                         <div class="w-full h-full bg-gradient-to-br from-emerald-100 to-teal-50"></div>
                     @endif
                 </div>
                 <div class="p-4">
-                    <h3 class="font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors">{{ $other->name }}</h3>
-                    <p class="text-sm text-emerald-600 font-medium">Rp {{ number_format($other->price_per_night, 0, ',', '.') }}/malam</p>
+                    <h3 class="font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors">{{ $other['name'] }}</h3>
+                    <p class="text-sm text-emerald-600 font-medium">Rp {{ number_format($other['price_per_night'], 0, ',', '.') }}/malam</p>
                 </div>
             </a>
             @endforeach
